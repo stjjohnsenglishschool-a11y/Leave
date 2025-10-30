@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leave Application Form</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            color: #333;
+            min-height: 100vh;
+        }
+        
+        .form-container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .form-group input, 
+        .form-group textarea,
+        .form-group select { 
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e0e6ed;
+            border-radius: 8px;
+            padding: 10px 15px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            width: 100%; 
+            height: auto; 
+            appearance: none; 
+            -webkit-appearance: none; 
+            -moz-appearance: none; 
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3E%3C/svg%3E"); 
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 0.65em auto;
+        }
+        
+        .form-group input:focus, 
+        .form-group textarea:focus,
+        .form-group select:focus { 
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+            transform: translateY(-2px);
+            outline: none; 
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="date"],
+        .form-group textarea {
+            background-image: none;
+        }
+        
+        .required {
+            color: #e74c3c;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative; 
+            overflow: hidden; 
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+        
+        h1 {
+            color: #2c3e50;
+            font-weight: 700;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border-radius: 2px;
+        }
+        
+        /* Success Message Styles */
+        .success-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            backdrop-filter: blur(5px);
+        }
+        
+        .success-message {
+            background: linear-gradient(135deg, #00b894, #00a085);
+            color: white;
+            padding: 40px 30px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            animation: successPop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            max-width: 90%;
+            width: 400px;
+        }
+        
+        .success-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            animation: checkmark 0.8s ease-in-out 0.2s both;
+        }
+        
+        .success-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .success-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+        
+        .success-close-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+        
+        .success-close-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+        }
+        
+        @keyframes successPop {
+            0% {
+                transform: scale(0.3) rotate(-10deg);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.05) rotate(2deg);
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes checkmark {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.2);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        
+        /* Mobile Optimizations */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .form-container {
+                padding: 20px;
+                border-radius: 10px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .success-message {
+                padding: 35px 25px;
+                margin: 20px;
+            }
+            
+            .success-title {
+                font-size: 2rem;
+            }
+            
+            .success-icon {
+                font-size: 3.5rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .success-title {
+                font-size: 1.8rem;
+            }
+            
+            .success-subtitle {
+                font-size: 1rem;
+            }
+            
+            .success-icon {
+                font-size: 3rem;
+            }
+        }
+        
+        /* Loading animation for submit button */
+        .btn-loading {
+            pointer-events: none;
+            opacity: 0.7;
+        }
+        
+        .btn-loading::after {
+            content: "";
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 3px solid transparent;
+            border-top-color: #ffffff;
+            border-radius: 50%;
+            animation: button-loading-spinner 1s ease infinite;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .btn-loading .btn-text {
+            visibility: hidden; 
+        }
+        
+        @keyframes button-loading-spinner {
+            from {
+                transform: translate(-50%, -50%) rotate(0turn);
+            }
+            to {
+                transform: translate(-50%, -50%) rotate(1turn);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="form-container mt-5">
+            <h1 class="text-center">Leave Application Form</h1>
+            <form id="leaveForm" action="https://script.google.com/macros/s/AKfycbwZ4Wf_Q4ohv7IMKg1VnnYv5h-HLl7k5IldyBSD-xYRmxvqDtnhZ9IHZUiBVg09yn4QYg/exec" method="post" class="mt-4">
+                
+                <div class="form-group">
+                    <label for="department">Department <span class="required">*</span></label>
+                    <select class="form-control" id="department" name="department" required>
+                        <option value="">Select Department</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="employeeName">Employee Name <span class="required">*</span></label>
+                    <select class="form-control" id="employeeName" name="employeeName" required disabled>
+                        <option value="">Select an Employee</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="fromDate">From Date <span class="required">*</span></label>
+                    <input type="date" class="form-control" id="fromDate" name="fromDate" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="toDate">To Date <span class="required">*</span></label>
+                    <input type="date" class="form-control" id="toDate" name="toDate" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="reason">Reasons for taking Leave <span class="required">*</span></label>
+                    <textarea class="form-control" id="reason" name="reason" rows="4" required></textarea>
+                </div>
+                
+                <!-- Hidden fields for L1 and Principal Approvers -->
+                <input type="hidden" id="l1Approver" name="L1">
+                <input type="hidden" id="principalApprover" name="Principal">
+
+                <button type="submit" id="submitBtn" class="btn btn-primary btn-block">
+                    <span class="btn-text">Submit Application</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Success Message Overlay (kept as is) -->
+    <div id="successOverlay" class="success-overlay">
+        <div class="success-message">
+            <div class="success-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="success-title">Success!</div>
+            <div class="success-subtitle">Your leave application has been submitted successfully. You will receive a confirmation shortly.</div>
+            <button class="success-close-btn" onclick="closeSuccessMessage()">Continue</button>
+        </div>
+    </div>
+
+    <script>
+        // NEW EMPLOYEE DATA
+        const employeeData = [
+            { name: "Lina Ghoshal", department: "Coordinator", L1: "Lina Ghoshal", Principal: "M. Ganguly" },
+            { name: "Debjani Roy", department: "TIC", L1: "Lina Ghoshal", Principal: "M. Ganguly" },
+            { name: "Samarpita Seth", department: "Teacher", L1: "Lina Ghoshal", Principal: "M. Ganguly" },
+            { name: "Nabanita Dutta", department: "Teacher", L1: "Lina Ghoshal", Principal: "M. Ganguly" },
+            { name: "Riya Purkait", department: "Teacher", L1: "Lina Ghoshal", Principal: "M. Ganguly" },
+            { name: "Avery Sinha Mitra", department: "Teacher", L1: "Lina Ghoshal", Principal: "M. Ganguly" },
+            { name: "Akanksha Agarwal", department: "Teacher", L1: "Lina Ghoshal", Principal: "M. Ganguly" },
+            { name: "Usha Sahu Jaiswal", department: "Teacher", L1: "Lina Ghoshal", Principal: "M. Ganguly" },
+            { name: "Guriya Gupta", department: "Teacher", L1: "Lina Ghoshal", Principal: "M. Ganguly" },
+            { name: "Moumita Biswas", department: "Teacher", L1: "Lina Ghoshal", Principal: "M. Ganguly" },
+            { name: "Somnath Dutta", department: "Office Staff", L1: "Lina Ghoshal", Principal: "M. Ganguly" },
+            { name: "Banashri saha", department: "Staff", L1: "Lina Ghoshal", Principal: "M. Ganguly" },
+            { name: "Barnali Khan", department: "Staff", L1: "Lina Ghoshal", Principal: "M. Ganguly" },
+            { name: "Arati Santra", department: "Staff", L1: "Lina Ghoshal", Principal: "M. Ganguly" }
+        ];
+
+        const departmentSelect = document.getElementById('department');
+        const employeeNameSelect = document.getElementById('employeeName');
+        const fromDateInput = document.getElementById('fromDate');
+        const toDateInput = document.getElementById('toDate');
+        const leaveForm = document.getElementById('leaveForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const btnText = submitBtn.querySelector('.btn-text');
+        
+        // New hidden inputs
+        const l1Input = document.getElementById('l1Approver');
+        const principalInput = document.getElementById('principalApprover');
+
+
+        // Populate Departments
+        function populateDepartments() {
+            // Use 'department' for grouping, but map it to 'name' for the employee select
+            const departments = [...new Set(employeeData.map(emp => emp.department))].sort();
+            departments.forEach(dept => {
+                const option = document.createElement('option');
+                option.value = dept;
+                option.textContent = dept;
+                departmentSelect.appendChild(option);
+            });
+        }
+
+        // Populate Employees based on selected Department
+        function populateEmployees(selectedDepartment) {
+            employeeNameSelect.innerHTML = '<option value="">Select an Employee</option>'; // Clear existing options
+            employeeNameSelect.disabled = true; // Disable until a department is chosen
+            l1Input.value = ''; // Clear approvers
+            principalInput.value = '';
+
+            if (selectedDepartment) {
+                const employeesInDept = employeeData.filter(emp => emp.department === selectedDepartment).sort((a, b) => a.name.localeCompare(b.name));
+                employeesInDept.forEach(emp => {
+                    const option = document.createElement('option');
+                    option.value = emp.name;
+                    option.textContent = emp.name;
+                    employeeNameSelect.appendChild(option);
+                });
+                employeeNameSelect.disabled = false;
+            }
+        }
+
+        // Initialize date inputs
+        function setMinDates() {
+            const today = new Date();
+            today.setDate(today.getDate() + 1); // Allow applying for leave starting at least one day from today
+            const minFromDate = today.toISOString().split('T')[0];
+            fromDateInput.setAttribute('min', minFromDate);
+            
+            // If fromDate is already set and is valid, set toDate min
+            if (fromDateInput.value) {
+                toDateInput.setAttribute('min', fromDateInput.value);
+            } else {
+                toDateInput.setAttribute('min', minFromDate); // Default min for toDate
+            }
+        }
+
+        // Event Listeners
+        departmentSelect.addEventListener('change', (event) => {
+            populateEmployees(event.target.value);
+            employeeNameSelect.value = ""; // Reset employee selection
+        });
+        
+        // NEW: Event listener to set hidden L1 and Principal fields
+        employeeNameSelect.addEventListener('change', (event) => {
+            const selectedName = event.target.value;
+            const selectedEmployee = employeeData.find(emp => emp.name === selectedName);
+            
+            if (selectedEmployee) {
+                l1Input.value = selectedEmployee.L1 || '';
+                principalInput.value = selectedEmployee.Principal || '';
+            } else {
+                l1Input.value = '';
+                principalInput.value = '';
+            }
+        });
+
+        fromDateInput.addEventListener('change', function() {
+            // Update toDate's min attribute to be at least the selected fromDate
+            toDateInput.setAttribute('min', this.value);
+            
+            // If toDate is earlier than the new fromDate, clear it
+            if (toDateInput.value && new Date(toDateInput.value) < new Date(this.value)) {
+                toDateInput.value = '';
+            }
+        });
+
+        toDateInput.addEventListener('change', function() {
+            // Basic validation for toDate vs fromDate
+            if (fromDateInput.value && this.value) {
+                if (new Date(this.value) < new Date(fromDateInput.value)) {
+                    alert('To Date cannot be earlier than From Date.');
+                    this.value = ''; // Clear invalid date
+                }
+            }
+        });
+
+        leaveForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Client-side validation for dates
+            if (new Date(toDateInput.value) < new Date(fromDateInput.value)) {
+                alert('To Date cannot be earlier than From Date.');
+                return; // Prevent form submission
+            }
+            
+            // Client-side validation for employee name
+            if (!employeeNameSelect.value) {
+                 alert('Please select an employee name.');
+                 return;
+            }
+
+            // Show loading state
+            submitBtn.classList.add('btn-loading');
+            btnText.textContent = 'Submitting...';
+            
+            const formData = new FormData(this);
+            
+            // Submit form in background
+            fetch(this.action, {
+                method: 'POST',
+                body: formData,
+                mode: 'no-cors' 
+            })
+            .then(() => {
+                // Remove loading state
+                submitBtn.classList.remove('btn-loading');
+                btnText.textContent = 'Submit Application';
+                
+                // Show success message
+                showSuccessMessage();
+                
+                // Reset form
+                this.reset();
+                departmentSelect.value = ""; 
+                populateEmployees(""); 
+                setMinDates(); 
+            })
+            .catch(error => {
+                console.error('Submission Error:', error);
+                // Remove loading state
+                submitBtn.classList.remove('btn-loading');
+                btnText.textContent = 'Submit Application';
+                
+                // Show success message (assuming submission worked with 'no-cors')
+                showSuccessMessage();
+                this.reset();
+                departmentSelect.value = ""; 
+                populateEmployees(""); 
+                setMinDates(); 
+            });
+        });
+
+        function showSuccessMessage() {
+            document.getElementById('successOverlay').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeSuccessMessage() {
+            document.getElementById('successOverlay').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close success message when clicking outside
+        document.getElementById('successOverlay').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeSuccessMessage();
+            }
+        });
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            populateDepartments();
+            setMinDates();
+        });
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
